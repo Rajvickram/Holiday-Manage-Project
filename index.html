@@ -20,7 +20,15 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
     />
 
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.3/themes/base/jquery-ui.min.css"
+    />
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.3/jquery-ui.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
 
@@ -28,6 +36,8 @@
 
     <script>
       $(document).ready(function () {
+        btnAdd();
+
         $("#btn_addnew").click(function () {
           $("#list").hide();
           $("#view").show();
@@ -37,7 +47,76 @@
           $("#list").show();
           $("#view").hide();
         });
+
+        $("#txt_date").datepicker({
+          minDate: 0,
+          maxDate: 0,
+          onSelect: function (dateText, inst) {
+            $(this).val(dateText);
+          },
+        });
       });
+
+      var btnAdd = function () {
+        $("#btn_add").click(function () {
+          if (Validate()) {
+            alert("Submitted");
+            clearForm();
+          }
+        });
+      };
+
+      var Validate = function () {
+        $(".text_shown_error").html("");
+
+        var date = $.trim($("#txt_date").val());
+        var code = $.trim($("#txt_code").val());
+        var Empid = $.trim($("#txt_empid").val());
+        var holidayType = $.trim($("#sel_type").val());
+        var status = $.trim($("#status_type").val());
+
+        if (date === "") {
+          $(".text_shown_error").html("Enter Date");
+          $("#txt_date").focus();
+          return false;
+        }
+
+        if (code === "") {
+          $(".text_shown_error").html("Enter Your Code");
+          $("#txt_code").focus();
+          return false;
+        }
+
+        if (Empid === "") {
+          $(".text_shown_error").html("Enter Employee ID");
+          $("#txt_empid").focus();
+          return false;
+        }
+
+        if (holidayType === "") {
+          $(".text_shown_error").html("Select Holiday Type");
+          $("#sel_type").focus();
+          return false;
+        }
+
+        if (status === "") {
+          $(".text_shown_error").html("Enter Status Type");
+          $("#status_type").focus();
+          return false;
+        }
+
+        return true;
+      };
+
+      var clearForm = function () {
+        $(".text_shown_error").hide();
+
+        $("#txt_date").val("");
+        $("#txt_code").val("");
+        $("#txt_empid").val("");
+        $("#sel_type").val("");
+        $("#status_type").val("");
+      };
     </script>
   </head>
   <body>
@@ -136,6 +215,7 @@
               </div>
             </div>
             <div class="card-body">
+              <h5 class="text_shown_error text-danger"></h5>
               <div class="form-group row">
                 <label for="date" class="col-md-1 ms-2 mt-2 control-label"
                   >Date :</label
@@ -193,7 +273,7 @@
                   >EmpId :</label
                 >
                 <div class="col-md-4">
-                  <input type="text" class="form-control" id="txt_id" />
+                  <input type="text" class="form-control" id="txt_empid" />
                 </div>
               </div>
 
